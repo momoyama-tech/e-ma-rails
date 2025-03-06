@@ -28,5 +28,10 @@ module CanterburyBack
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    if ENV["GOOGLE_CLOUD_KEYFILE_JSON_BASE64_ENCODED"]
+      decoded_json = Base64.decode64(ENV["GOOGLE_CLOUD_KEYFILE_JSON_BASE64_ENCODED"])
+      ENV["GOOGLE_CLOUD_KEYFILE_JSON"] = JSON.parse(decoded_json).to_json
+    end
   end
 end
