@@ -30,5 +30,7 @@
 
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "bin/setup --skip-server"
+  "postCreateCommand": "bin/setup --skip-server",
+
+  "initializeCommand": "if ! docker network ls | awk '{ print $2 }' | grep -qx 'e-ma-common'; then docker network create --driver bridge e-ma-common; fi",
 }

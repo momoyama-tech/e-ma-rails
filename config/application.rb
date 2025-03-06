@@ -33,5 +33,7 @@ module CanterburyBack
       decoded_json = Base64.decode64(ENV["GOOGLE_CLOUD_KEYFILE_JSON_BASE64_ENCODED"])
       ENV["GOOGLE_CLOUD_KEYFILE_JSON"] = JSON.parse(decoded_json).to_json
     end
+
+    ENV["REMBG_API_URL"] ||= "http://localhost:8080"
   end
 end
