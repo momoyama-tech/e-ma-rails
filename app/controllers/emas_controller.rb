@@ -84,7 +84,7 @@ class EmasController < ApplicationController
     uri = URI.parse(rembg_url)
 
     # 一時ファイルを作成
-    temp_file = Tempfile.new(["rembg_input", ".png"])
+    temp_file = Tempfile.new([ "rembg_input", ".png" ])
     image.write(temp_file.path)
 
     # 画像データを読み込み
@@ -96,7 +96,7 @@ class EmasController < ApplicationController
     request.body = file_data
 
     # API にリクエストを送信
-    response = Net::HTTP.start(uri.hostname, uri.port) do |http|
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
       http.request(request)
     end
 
