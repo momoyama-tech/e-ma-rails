@@ -18,6 +18,19 @@ class EmasController < ApplicationController
     if ema.save
       split_and_attach_images(ema, params[:image])
 
+      ActionCable.server.broadcast("room_channel", {
+        message: "新しいイラストが投稿されました！",
+        data: {
+          title: "新しいイラストが投稿されました！",
+          description: DateTime.now.to_s,
+          urls: {
+            wish: ema.wish_image&.image&.attached? ? url_for(ema.wish_image.image) : nil,
+            name: ema.name_image&.image&.attached? ? url_for(ema.name_image.image) : nil,
+            illustration: ema.illustration&.image&.attached? ? url_for(ema.illustration.image) : nil
+          }
+        }
+      })
+
       render json: format_ema(ema), status: :created
     else
       render json: { error: ema.errors.full_messages }, status: :unprocessable_entity
