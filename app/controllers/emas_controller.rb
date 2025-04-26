@@ -47,15 +47,21 @@ class EmasController < ApplicationController
 
   def split_and_attach_images(ema, uploaded_image)
     # 画像をMiniMagickで処理
-    image = MiniMagick::Image.read(uploaded_image.tempfile)
-    width = image.width
-    height = image.height
-
-    # 画像を3分割
-    illustration_crop = image.crop("100%x33%+0+0") # 上部1/3（イラスト）
+    original = MiniMagick::Image.open(uploaded_image.tempfile)
+    width = original.width
+    height = original.height
+    puts "Width: #{width}, Height: #{height}"
+    illustration_crop = original.clone
+    illustration_crop.crop("85%x60%+#{(width * 0.08).to_i}+#{(height * 0.03).to_i}")
     illustration_crop = process_with_rembg(illustration_crop)
-    name_crop = image.crop("100%x33%+0+#{height / 3}") # 中央1/3（名前）
-    wish_crop = image.crop("100%x34%+0+#{(height / 3) * 2}") # 下部1/3（願い事）
+
+    original = MiniMagick::Image.open(uploaded_image.tempfile)
+    name_crop = original.clone
+    name_crop.crop("85%x15%+#{(width * 0.08).to_i}+#{(height * 0.64).to_i}")
+
+    original = MiniMagick::Image.open(uploaded_image.tempfile)
+    wish_crop = original.clone
+    wish_crop.crop("85%x15%+#{(width * 0.08).to_i}+#{(height * 0.80).to_i}")
 
     # 画像を保存
     save_image(ema, illustration_crop, "illustration")
