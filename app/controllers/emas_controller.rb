@@ -2,7 +2,7 @@ class EmasController < ApplicationController
   before_action :set_ema, only: [ :show ]
 
   def index
-    emas = Ema.includes(:ema_images)
+    emas = Ema.includes(:ema_images).order(created_at: :desc).limit(20)
     render json: emas.map { |ema| format_ema(ema) }, status: :ok
   end
 
