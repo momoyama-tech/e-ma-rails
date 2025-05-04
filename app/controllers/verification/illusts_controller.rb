@@ -2,7 +2,7 @@ module Verification
   class IllustsController < ApplicationController
     def index
       ActionCable.server.broadcast("room_channel", {
-        message: "新しいイラストが投稿されました！",
+        message: "new",
         data: {
           title: "新しいイラストが投稿されました！",
           description: "新しいイラストが投稿されました！",

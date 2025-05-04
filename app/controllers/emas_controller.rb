@@ -19,7 +19,7 @@ class EmasController < ApplicationController
       split_and_attach_images(ema, params[:image])
 
       ActionCable.server.broadcast("room_channel", {
-        message: "新しいイラストが投稿されました！",
+        message: "new",
         data: {
           title: "新しいイラストが投稿されました！",
           description: DateTime.now.to_s,
